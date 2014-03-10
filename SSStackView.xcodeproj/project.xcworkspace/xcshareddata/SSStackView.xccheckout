@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>75F55AD0-4786-42EA-B5EE-A0CD8558E636</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SSStackView</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>883CB6D0-285F-45D3-A1F8-8DAA87784F10</key>
+		<string>https://github.com/PlenipotentSS/SSStackedPageView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SSStackView.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>883CB6D0-285F-45D3-A1F8-8DAA87784F10</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/PlenipotentSS/SSStackedPageView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>883CB6D0-285F-45D3-A1F8-8DAA87784F10</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>883CB6D0-285F-45D3-A1F8-8DAA87784F10</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SSStackView</string>
+		</dict>
+	</array>
+</dict>
+</plist>
