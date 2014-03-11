@@ -1,7 +1,7 @@
 SSStackedPageView
 =================
 
-Inspired by Passport App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency. Easily scroll through UIImageViews, UIViews or your custom View with this one do-it-all class.
+Inspired by Passbook App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency. Easily scroll through UIImageViews, UIViews or your custom View with this one do-it-all class.
 
 
 SSStackedPageView uses a scroll view to manage through your large list of views. By either selecting or dragging the view up, you divide the stack and highlight that view. Each view is customized to the length of the SSStackedPageView. For efficiency, I make use of a reusable array of pages so that scrolling is fast and beautiful.
