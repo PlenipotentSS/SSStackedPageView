@@ -16,13 +16,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-U0-uaX" customClass="SSStackedPageView">
-                                <rect key="frame" x="0.0" y="113" width="320" height="329"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-U0-uaX" customClass="SSStackedPageView">
+                                <rect key="frame" x="0.0" y="27" width="320" height="541"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="541" id="65E-Kz-5ga"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HUE-U0-uaX" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="8pP-FN-8mJ"/>
+                            <constraint firstAttribute="trailing" secondItem="HUE-U0-uaX" secondAttribute="trailing" id="kAX-gQ-MoM"/>
+                            <constraint firstItem="HUE-U0-uaX" firstAttribute="top" secondItem="CKe-lV-S0p" secondAttribute="bottom" constant="7" id="lvQ-ST-nki"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="stackView" destination="HUE-U0-uaX" id="b3U-19-UZO"/>
