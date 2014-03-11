@@ -10,7 +10,7 @@
 #import "SSStackedPageView.h"
 #import "UIColor+CatColors.h"
 
-@interface ViewController () <SSStackViewDelegate>
+@interface ViewController () <SSStackedViewDelegate>
 
 @property (nonatomic) IBOutlet SSStackedPageView *stackView;
 @property (nonatomic) NSMutableArray *views;

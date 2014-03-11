@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@protocol SSStackViewDelegate;
+@protocol SSStackedViewDelegate;
 
 @interface SSStackedPageView : UIView<UIScrollViewDelegate>
 
 ///delegate
-@property (nonatomic) id<SSStackViewDelegate> delegate;
+@property (nonatomic) id<SSStackedViewDelegate> delegate;
 
 ///user settings for pages to have shadows
 @property (nonatomic) BOOL pagesHaveShadows;
@@ -22,7 +22,7 @@
 
 @end
 
-@protocol SSStackViewDelegate
+@protocol SSStackedViewDelegate
 
 ///method for setting the current page at the index
 - (UIView*)stackView:(SSStackedPageView *)stackView pageForIndex:(NSInteger)index;

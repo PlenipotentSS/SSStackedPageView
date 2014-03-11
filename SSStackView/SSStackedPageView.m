@@ -154,9 +154,6 @@
         thisFrame.origin.y = self.theScrollView.contentOffset.y+TOP_OFFSET_HIDE + visibleIndex * COLLAPSED_OFFSET;
         page.frame = thisFrame;
     }
-    //scale to normal size when selected
-//    UIView *selected = (UIView*)[self.pages objectAtIndex:stop];
-//    selected.layer.transform = CATransform3DMakeScale(1.f, 1.f, 1.f);
     [UIView commitAnimations];
 }
 
@@ -184,10 +181,14 @@
     for (NSInteger i = start; i < stop; i++) {
         UIView *page = [self.pages objectAtIndex:i];
         
-        [UIView beginAnimations:@"stackScrolling" context:nil];
-        [UIView setAnimationDuration:.4f];
-        page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
-        [UIView commitAnimations];
+        if (i == 0 || [self.pages objectAtIndex:i-1] == [NSNull null]) {
+            page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
+        } else{
+            [UIView beginAnimations:@"stackScrolling" context:nil];
+            [UIView setAnimationDuration:.4f];
+            page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
+            [UIView commitAnimations];
+        }
     }
 }
 
