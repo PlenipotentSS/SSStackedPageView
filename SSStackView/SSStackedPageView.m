@@ -72,6 +72,9 @@
 #pragma mark - setup methods
 - (void)setup
 {
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    [self addGestureRecognizer:tap];
+    
     self.pageCount = 0;
     self.selectedPageIndex = -1;
     
@@ -84,8 +87,7 @@
     self.theScrollView.backgroundColor = [UIColor clearColor];
     self.theScrollView.showsVerticalScrollIndicator = NO;
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-    [self addGestureRecognizer:tap];
+
 }
 
 #pragma mark - Page Selection
@@ -127,7 +129,7 @@
     for (NSInteger i=start;i <= stop;i++) {
         UIView *page = (UIView*)[self.pages objectAtIndex:i];
         CGRect thisFrame = page.frame;
-        thisFrame.origin.y = TOP_OFFSET_HIDE + i * COLLAPSED_OFFSET;
+        thisFrame.origin.y = self.theScrollView.contentOffset.y+TOP_OFFSET_HIDE + i * COLLAPSED_OFFSET;
         page.frame = thisFrame;
     }
     [UIView commitAnimations];
@@ -141,7 +143,7 @@
     for (NSInteger i=start;i < stop;i++) {
         UIView *page = (UIView*)[self.pages objectAtIndex:i];
         CGRect thisFrame = page.frame;
-        thisFrame.origin.y = CGRectGetHeight(self.frame)-BOTTOM_OFFSET_HIDE + i * COLLAPSED_OFFSET;
+        thisFrame.origin.y = self.theScrollView.contentOffset.y+CGRectGetHeight(self.frame)-BOTTOM_OFFSET_HIDE + i * COLLAPSED_OFFSET;
         page.frame = thisFrame;
     }
     [UIView commitAnimations];
@@ -219,6 +221,7 @@
         }
         
         if (![page superview]) {
+            page.userInteractionEnabled = YES;
             [self.theScrollView addSubview:page];
         }
     }
@@ -258,7 +261,11 @@
         UIView *page = [self.pages objectAtIndex:i];
         CGPoint tappedPoint = [sender locationInView:[page superview]];
         CGRect pageTouchFrame = page.frame;
-        if ( i+1 < [self.pages count]) {
+        if (self.selectedPageIndex == i) {
+            pageTouchFrame.size.height = CGRectGetHeight(pageTouchFrame)-COLLAPSED_OFFSET;
+        } else if (self.selectedPageIndex != -1) {
+            pageTouchFrame.size.height = COLLAPSED_OFFSET;
+        } else if ( i+1 < [self.pages count] ) {
             pageTouchFrame.size.height = PAGE_PEAK;
         }
         if (CGRectContainsPoint(pageTouchFrame, tappedPoint)) {
@@ -267,6 +274,12 @@
             break;
         }
     }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"%@",[touches anyObject]);
+    [super touchesBegan:touches withEvent:event];
 }
 
 @end
