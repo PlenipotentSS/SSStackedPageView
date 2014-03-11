@@ -15,7 +15,8 @@
 #define TOP_OFFSET_HIDE 20.f
 #define BOTTOM_OFFSET_HIDE 20.f
 #define COLLAPSED_OFFSET 5.f
-
+#define SHADOW_VECTOR CGSizeMake(0.f,-.5f)
+#define SHADOW_ALPHA .3f
 
 @interface SSStackedPageView()
 
@@ -89,9 +90,6 @@
 #pragma mark - setup methods
 - (void)setup
 {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-    [self addGestureRecognizer:tap];
-    
     self.pageCount = 0;
     self.selectedPageIndex = -1;
     
@@ -113,11 +111,13 @@
     if (index != self.selectedPageIndex) {
         self.selectedPageIndex = index;
         NSInteger visibleEnd = self.visiblePages.location + self.visiblePages.length;
-        [self hidePagesBehind:NSMakeRange(0, index)];
+        [self hidePagesBehind:NSMakeRange(self.visiblePages.location, index-self.visiblePages.location)];
         if (index+1 < visibleEnd) {
             NSInteger start = index+1;
-            [self hidePagesInFront:NSMakeRange(start,visibleEnd - start)];
+            NSInteger stop = visibleEnd-start;
+            [self hidePagesInFront:NSMakeRange(start,stop)];
         }
+        self.theScrollView.scrollEnabled = NO;
     } else {
         self.selectedPageIndex = -1;
         [self resetPages];
@@ -129,6 +129,7 @@
     NSInteger start = self.visiblePages.location;
     NSInteger stop = self.visiblePages.location + self.visiblePages.length;
     [UIView beginAnimations:@"stackReset" context:nil];
+    [UIView setAnimationDuration:.4f];
     for (NSInteger i=start;i < stop;i++) {
         UIView *page = [self.pages objectAtIndex:i];
         page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
@@ -137,6 +138,7 @@
         page.frame = thisFrame;
     }
     [UIView commitAnimations];
+    self.theScrollView.scrollEnabled = YES;
 }
 
 - (void)hidePagesBehind:(NSRange)backPages
@@ -144,14 +146,17 @@
     NSInteger start = backPages.location;
     NSInteger stop = backPages.location + backPages.length;
     [UIView beginAnimations:@"stackHideBack" context:nil];
+    [UIView setAnimationDuration:.4f];
     for (NSInteger i=start;i <= stop;i++) {
         UIView *page = (UIView*)[self.pages objectAtIndex:i];
         CGRect thisFrame = page.frame;
-        thisFrame.origin.y = self.theScrollView.contentOffset.y+TOP_OFFSET_HIDE + i * COLLAPSED_OFFSET;
+        NSInteger visibleIndex = i-self.visiblePages.location;
+        thisFrame.origin.y = self.theScrollView.contentOffset.y+TOP_OFFSET_HIDE + visibleIndex * COLLAPSED_OFFSET;
         page.frame = thisFrame;
     }
-    UIView *selected = (UIView*)[self.pages objectAtIndex:stop];
-    selected.layer.transform = CATransform3DMakeScale(1.f, 1.f, 1.f);
+    //scale to normal size when selected
+//    UIView *selected = (UIView*)[self.pages objectAtIndex:stop];
+//    selected.layer.transform = CATransform3DMakeScale(1.f, 1.f, 1.f);
     [UIView commitAnimations];
 }
 
@@ -160,6 +165,7 @@
     NSInteger start = frontPages.location;
     NSInteger stop = frontPages.location + frontPages.length;
     [UIView beginAnimations:@"stackHideFront" context:nil];
+    [UIView setAnimationDuration:.4f];
     for (NSInteger i=start;i < stop;i++) {
         UIView *page = (UIView*)[self.pages objectAtIndex:i];
         CGRect thisFrame = page.frame;
@@ -179,6 +185,7 @@
         UIView *page = [self.pages objectAtIndex:i];
         
         [UIView beginAnimations:@"stackScrolling" context:nil];
+        [UIView setAnimationDuration:.4f];
         page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
         [UIView commitAnimations];
     }
@@ -201,32 +208,29 @@
         
         NSInteger endIndex = 0;
         for (NSInteger i=0; i < [self.pages count]; i++) {
-            NSLog(@"%i %f < %f",(int)i,(PAGE_PEAK * i),end.y);
-            if ((PAGE_PEAK * i < end.y && PAGE_PEAK * (i + 1) >= end.y ) || i == [self.pages count]) {
+            if ((PAGE_PEAK * i < end.y && PAGE_PEAK * (i + 1) >= end.y ) || i == [self.pages count]-1) {
                 endIndex = i + 1;
                 break;
             }
         }
         
         startIndex = MAX(startIndex - 1, 0);
-//        endIndex = MIN(endIndex, [self.pages count] - 1);
-        endIndex = [self.pages count] - 1;
+        endIndex = MIN(endIndex, [self.pages count] - 1);
         CGFloat pagedLength = endIndex - startIndex + 1;
         
         if (self.visiblePages.location != startIndex || self.visiblePages.length != pagedLength) {
             _visiblePages.location = startIndex;
             _visiblePages.length = pagedLength;
-            NSLog(@"location: %i length: %i",(int)self.visiblePages.location,(int)self.visiblePages.length);
             for (NSInteger i = startIndex; i <= endIndex; i++) {
                 [self setPageAtIndex:i];
             }
             
             for (NSInteger i = 0; i < startIndex; i ++) {
-                [self setPageAtIndex:i];
+                [self removePageAtIndex:i];
             }
             
             for (NSInteger i = endIndex + 1; i < [self.pages count]; i ++) {
-                [self setPageAtIndex:i];
+                [self removePageAtIndex:i];
             }
         }
     }
@@ -241,17 +245,29 @@
             [self.pages replaceObjectAtIndex:index withObject:page];
             page.frame = CGRectMake(0.f, index * PAGE_PEAK, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
             if (self.pagesHaveShadows) {
-                [page.layer setShadowOpacity:0.4];
-                [page.layer setShadowOffset:CGSizeMake(0, -3)];
+                [page.layer setShadowOpacity:SHADOW_ALPHA];
+                [page.layer setShadowOffset:SHADOW_VECTOR];
                 page.clipsToBounds = NO;
             }
+            page.layer.zPosition = index;
         }
         
         if (![page superview]) {
-            [self.theScrollView addSubview:page];
+            if ((index == 0 || [self.pages objectAtIndex:index-1] == [NSNull null]) && index+1 < [self.pages count]) {
+                UIView *topPage = [self.pages objectAtIndex:index+1];
+                [self.theScrollView insertSubview:page belowSubview:topPage];
+            } else {
+                [self.theScrollView addSubview:page];
+            }
             page.tag = index;
+        }
+        
+        if ([page.gestureRecognizers count] < 2) {
             UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
             [page addGestureRecognizer:pan];
+            
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+            [page addGestureRecognizer:tap];
         }
     }
 }
@@ -286,23 +302,19 @@
 #pragma mark - gesture recognizer
 - (void)tapped:(UIGestureRecognizer*)sender
 {
-    for (int i=0; i < [self.pages count]; i++) {
-        UIView *page = [self.pages objectAtIndex:i];
-        CGPoint tappedPoint = [sender locationInView:[page superview]];
-        CGRect pageTouchFrame = page.frame;
-        if (self.selectedPageIndex == i) {
-            pageTouchFrame.size.height = CGRectGetHeight(pageTouchFrame)-COLLAPSED_OFFSET;
-        } else if (self.selectedPageIndex != -1) {
-            pageTouchFrame.size.height = COLLAPSED_OFFSET;
-        } else if ( i+1 < [self.pages count] ) {
-            pageTouchFrame.size.height = PAGE_PEAK;
-        }
-        if (CGRectContainsPoint(pageTouchFrame, tappedPoint)) {
-            [self selectPageAtIndex:i];
-            [self.delegate stackView:self selectedPageAtIndex:i];
-            break;
-        }
+    
+    UIView *page = [sender view];
+    NSInteger index = [self.pages indexOfObject:page];
+    CGRect pageTouchFrame = page.frame;
+    if (self.selectedPageIndex == index) {
+        pageTouchFrame.size.height = CGRectGetHeight(pageTouchFrame)-COLLAPSED_OFFSET;
+    } else if (self.selectedPageIndex != -1) {
+        pageTouchFrame.size.height = COLLAPSED_OFFSET;
+    } else if ( index+1 < [self.pages count] ) {
+        pageTouchFrame.size.height = PAGE_PEAK;
     }
+    [self selectPageAtIndex:index];
+    [self.delegate stackView:self selectedPageAtIndex:index];
 }
 
 - (void)panned:(UIPanGestureRecognizer*)recognizer
@@ -322,17 +334,20 @@
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (self.trackedTranslation < -PAGE_PEAK) {
             NSInteger pageIndex = [self.pages indexOfObject:page];
-            self.selectedPageIndex = pageIndex;
-            NSInteger visibleEnd = self.visiblePages.location + self.visiblePages.length;
-            [self hidePagesBehind:NSMakeRange(0, pageIndex)];
-            if (pageIndex+1 < visibleEnd) {
-                NSInteger start = pageIndex+1;
-                [self hidePagesInFront:NSMakeRange(start,visibleEnd - start)];
-            }
+            [self selectPageAtIndex:pageIndex];
+            [self.delegate stackView:self selectedPageAtIndex:pageIndex];
         } else {
+            self.selectedPageIndex = -1;
             [self resetPages];
         }
     }
+}
+
+#pragma mark - ScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self setPageAtOffset:scrollView.contentOffset];
+    [self reloadVisiblePages];
 }
 
 @end
