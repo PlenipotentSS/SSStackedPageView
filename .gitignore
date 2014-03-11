@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 # OS X
 .DS_Store
 
+=======
+>>>>>>> 444e859a5c2bd7f64d915c972df9005b6f645acc
 # Xcode
 build/
 *.pbxuser
@@ -19,3 +22,8 @@ DerivedData
 *.hmap
 *.ipa
 
+<<<<<<< HEAD
+=======
+# CocoaPods
+Pods
+>>>>>>> 444e859a5c2bd7f64d915c972df9005b6f645acc
