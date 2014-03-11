@@ -12,13 +12,16 @@
 #define PAGE_PEAK 50.f
 #define MINIMUM_ALPHA 0.5f
 #define MINIMUM_SCALE 0.9f
+#define TOP_OFFSET_HIDE 20.f
+#define BOTTOM_OFFSET_HIDE 20.f
+#define COLLAPSED_OFFSET 5.f
 
 
 @interface SSStackedPageView()
 
 @property (nonatomic) UIScrollView *theScrollView;
 @property (nonatomic) NSMutableArray *reusablePages;
-@property (nonatomic) UIView *selectedPage;
+@property (nonatomic) NSInteger selectedPageIndex;
 
 @end
 
@@ -70,6 +73,7 @@
 - (void)setup
 {
     self.pageCount = 0;
+    self.selectedPageIndex = -1;
     
     self.pages = [[NSMutableArray alloc] init];
     self.reusablePages = [[NSMutableArray alloc] init];
@@ -84,19 +88,74 @@
     [self addGestureRecognizer:tap];
 }
 
+#pragma mark - Page Selection
+- (void)selectPageAtIndex:(NSInteger)index
+{
+    if (index != self.selectedPageIndex) {
+        self.selectedPageIndex = index;
+        NSInteger visibleEnd = self.visiblePages.location + self.visiblePages.length;
+        [self hidePagesBehind:NSMakeRange(0, index)];
+        if (index+1 < visibleEnd) {
+            NSInteger start = index+1;
+            [self hidePagesInFront:NSMakeRange(start,visibleEnd - start)];
+        }
+    } else {
+        self.selectedPageIndex = -1;
+        [self resetPages];
+    }
+}
+
+- (void)resetPages
+{
+    NSInteger start = self.visiblePages.location;
+    NSInteger stop = self.visiblePages.location + self.visiblePages.length;
+    [UIView beginAnimations:@"stackReset" context:nil];
+    for (NSInteger i=start;i < stop;i++) {
+        UIView *page = [self.pages objectAtIndex:i];
+        CGRect thisFrame = page.frame;
+        thisFrame.origin.y = i * PAGE_PEAK;
+        page.frame = thisFrame;
+    }
+    [UIView commitAnimations];
+}
+
+- (void)hidePagesBehind:(NSRange)backPages
+{
+    NSInteger start = backPages.location;
+    NSInteger stop = backPages.location + backPages.length;
+    [UIView beginAnimations:@"stackHideBack" context:nil];
+    for (NSInteger i=start;i <= stop;i++) {
+        UIView *page = (UIView*)[self.pages objectAtIndex:i];
+        CGRect thisFrame = page.frame;
+        thisFrame.origin.y = TOP_OFFSET_HIDE + i * COLLAPSED_OFFSET;
+        page.frame = thisFrame;
+    }
+    [UIView commitAnimations];
+}
+
+- (void)hidePagesInFront:(NSRange)frontPages
+{
+    NSInteger start = frontPages.location;
+    NSInteger stop = frontPages.location + frontPages.length;
+    [UIView beginAnimations:@"stackHideFront" context:nil];
+    for (NSInteger i=start;i < stop;i++) {
+        UIView *page = (UIView*)[self.pages objectAtIndex:i];
+        CGRect thisFrame = page.frame;
+        thisFrame.origin.y = CGRectGetHeight(self.frame)-BOTTOM_OFFSET_HIDE + i * COLLAPSED_OFFSET;
+        page.frame = thisFrame;
+    }
+    [UIView commitAnimations];
+}
+
 #pragma mark - displaying pages
 - (void)reloadVisiblePages
 {
-    CGFloat offset = self.theScrollView.contentOffset.x;
     NSInteger start = self.visiblePages.location;
     NSInteger stop = self.visiblePages.location + self.visiblePages.length;
     
     for (NSInteger i = start; i < stop; i++) {
         UIView *page = [self.pages objectAtIndex:i];
-//        CGFloat yOrigin = CGRectGetMinY(page.frame)+OFFSET_TOP;
-//        CGFloat change = (yOrigin >= offset) ? yOrigin-offset : offset-yOrigin;
         
-        //nearing off screen animations
         [UIView beginAnimations:@"stackScrolling" context:nil];
         page.layer.transform = CATransform3DMakeScale(MINIMUM_SCALE, MINIMUM_SCALE, 1.f);
         [UIView commitAnimations];
@@ -120,20 +179,20 @@
         
         NSInteger endIndex = 0;
         for (NSInteger i=0; i < [self.pages count]; i++) {
-            if ((PAGE_PEAK * (i+1) < end.y && PAGE_PEAK * (i + 2) >= end.y ) || i+2 == [self.pages count]) {
+            if ((PAGE_PEAK * i < end.y && PAGE_PEAK * (i + 1) >= end.y ) || i == [self.pages count]) {
                 endIndex = i + 1;
                 break;
             }
         }
         
         startIndex = MAX(startIndex - 1, 0);
-        endIndex = MAX(endIndex + 1, [self.pages count] - 1);
+        endIndex = MAX(endIndex, [self.pages count] - 1);
         CGFloat pagedLength = endIndex - startIndex + 1;
         
         if (self.visiblePages.location != startIndex || self.visiblePages.length != pagedLength) {
             _visiblePages.location = startIndex;
             _visiblePages.length = pagedLength;
-            
+            NSLog(@"location: %i length: %i",self.visiblePages.location,self.visiblePages.length);
             for (NSInteger i = startIndex; i <= endIndex; i++) {
                 [self setPageAtIndex:i];
             }
@@ -203,6 +262,7 @@
             pageTouchFrame.size.height = PAGE_PEAK;
         }
         if (CGRectContainsPoint(pageTouchFrame, tappedPoint)) {
+            [self selectPageAtIndex:i];
             [self.delegate stackView:self selectedPageAtIndex:i];
             break;
         }

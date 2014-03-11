@@ -25,7 +25,7 @@
     
     self.stackView.delegate = self;
     self.views = [[NSMutableArray alloc] init];
-    for (int i=0;i<10;i++) {
+    for (int i=0;i<4;i++) {
         UIView *thisView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 200.f, 100.f)];
         [self.views addObject:thisView];
     }
