@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SSStackedPageView"
-  s.version          = "0.0.2"
+  s.version          = "0.0.3"
   s.summary          = "Inspired by Passport App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency."
   s.description      = <<-DESC
                        Inspired by Passport App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency. Easily scroll through UIImageViews, UIViews or your custom View with this one do-it-all class.
@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
   s.screenshots      = "https://github.com/PlenipotentSS/SSStackedPageView/blob/master/screenshot1.png", "https://github.com/PlenipotentSS/SSStackedPageView/blob/master/screenshot2.png"
   s.license          = 'MIT'
   s.author           = { "PlenipotentSS" => "stevensonhoyt@icloud.com" }
-  s.source           = { :git => "https://github.com/PlenipotentSS/SSStackedPageView.git", :tag => s.version.to_s }
-  s.source_files  = 'Classes/*.{h,m}'
+  s.source           = { :git => "https://github.com/PlenipotentSS/SSStackedPageView.git", :tag => s.version.to_s}
+  s.source_files     = 'Classes/SSStackedPageView.h,m'
 
   s.platform     = :ios, '7.0'
   s.ios.deployment_target = '7.0'
@@ -22,6 +22,4 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Classes'
   s.resources = 'Resources'
-
-  s.osx.exclude_files = 'Classes/ios'
 end
