@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SSStackedPageView"
-  s.version          = "0.0.3"
+  s.version          = "0.0.4"
   s.summary          = "Inspired by Passport App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency."
   s.description      = <<-DESC
                        Inspired by Passport App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency. Easily scroll through UIImageViews, UIViews or your custom View with this one do-it-all class.
