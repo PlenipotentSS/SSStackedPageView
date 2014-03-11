@@ -15,10 +15,8 @@ Pod::Spec.new do |s|
   s.author           = { "PlenipotentSS" => "stevensonhoyt@icloud.com" }
   s.source           = { :git => "https://github.com/PlenipotentSS/SSStackedPageView.git", :tag => s.version.to_s}
   s.source_files     = 'Classes/SSStackedPageView.h,m'
-
   s.platform     = :ios, '7.0'
   s.ios.deployment_target = '7.0'
   s.requires_arc = true
-
   s.source_files = 'Classes'
 end
