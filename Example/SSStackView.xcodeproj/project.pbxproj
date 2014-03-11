@@ -21,8 +21,8 @@
 		D210AA6318CD9A1900575B52 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D210AA4218CD9A1900575B52 /* UIKit.framework */; };
 		D210AA6B18CD9A1900575B52 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D210AA6918CD9A1900575B52 /* InfoPlist.strings */; };
 		D210AA6D18CD9A1900575B52 /* SSStackViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D210AA6C18CD9A1900575B52 /* SSStackViewTests.m */; };
-		D210AA7818CD9AA900575B52 /* SSStackedPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D210AA7718CD9AA900575B52 /* SSStackedPageView.m */; };
 		D210AA7B18CDBCB600575B52 /* UIColor+CatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D210AA7A18CDBCB600575B52 /* UIColor+CatColors.m */; };
+		D2C0FC5218CF921A00CCA7DD /* SSStackedPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0FC5118CF921A00CCA7DD /* SSStackedPageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,10 +55,10 @@
 		D210AA6818CD9A1900575B52 /* SSStackViewTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SSStackViewTests-Info.plist"; sourceTree = "<group>"; };
 		D210AA6A18CD9A1900575B52 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D210AA6C18CD9A1900575B52 /* SSStackViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSStackViewTests.m; sourceTree = "<group>"; };
-		D210AA7618CD9AA900575B52 /* SSStackedPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSStackedPageView.h; sourceTree = "<group>"; };
-		D210AA7718CD9AA900575B52 /* SSStackedPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSStackedPageView.m; sourceTree = "<group>"; };
 		D210AA7918CDBCB600575B52 /* UIColor+CatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CatColors.h"; sourceTree = "<group>"; };
 		D210AA7A18CDBCB600575B52 /* UIColor+CatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CatColors.m"; sourceTree = "<group>"; };
+		D2C0FC5018CF921A00CCA7DD /* SSStackedPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSStackedPageView.h; path = ../../Classes/SSStackedPageView.h; sourceTree = "<group>"; };
+		D2C0FC5118CF921A00CCA7DD /* SSStackedPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSStackedPageView.m; path = ../../Classes/SSStackedPageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,8 +123,8 @@
 				D210AA5018CD9A1900575B52 /* Main_iPhone.storyboard */,
 				D210AA5618CD9A1900575B52 /* ViewController.h */,
 				D210AA5718CD9A1900575B52 /* ViewController.m */,
-				D210AA7618CD9AA900575B52 /* SSStackedPageView.h */,
-				D210AA7718CD9AA900575B52 /* SSStackedPageView.m */,
+				D2C0FC5018CF921A00CCA7DD /* SSStackedPageView.h */,
+				D2C0FC5118CF921A00CCA7DD /* SSStackedPageView.m */,
 				D210AA7918CDBCB600575B52 /* UIColor+CatColors.h */,
 				D210AA7A18CDBCB600575B52 /* UIColor+CatColors.m */,
 				D210AA5918CD9A1900575B52 /* Images.xcassets */,
@@ -259,11 +259,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2C0FC5218CF921A00CCA7DD /* SSStackedPageView.m in Sources */,
 				D210AA5818CD9A1900575B52 /* ViewController.m in Sources */,
 				D210AA4F18CD9A1900575B52 /* AppDelegate.m in Sources */,
 				D210AA7B18CDBCB600575B52 /* UIColor+CatColors.m in Sources */,
 				D210AA4B18CD9A1900575B52 /* main.m in Sources */,
-				D210AA7818CD9AA900575B52 /* SSStackedPageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +476,7 @@
 				D210AA7218CD9A1900575B52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D210AA7318CD9A1900575B52 /* Build configuration list for PBXNativeTarget "SSStackViewTests" */ = {
 			isa = XCConfigurationList;
@@ -484,6 +485,7 @@
 				D210AA7518CD9A1900575B52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

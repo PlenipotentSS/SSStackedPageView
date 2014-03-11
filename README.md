@@ -33,5 +33,12 @@ Lastly, we have ```stackView:selectedPageAtIndex:``` method which will be your h
 Known Bugs:
 - Rotation brings odd results when pages are reused. Please Fork and Pull request if you find a solution or other bugs.
 
+####Installation:
+
+It's a CocoaPod! You have the choice to fork/clone the project, or you install via Podfile:
+
+```
+pod 'SSStackedPageView', '~> 0.0'
+```
 
 Thanks, and Enjoy!
