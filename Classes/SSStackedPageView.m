@@ -248,6 +248,7 @@
             if (self.pagesHaveShadows) {
                 [page.layer setShadowOpacity:SHADOW_ALPHA];
                 [page.layer setShadowOffset:SHADOW_VECTOR];
+                page.layer.shadowPath = [UIBezierPath bezierPathWithRect:page.bounds].CGPath;
                 page.clipsToBounds = NO;
             }
             page.layer.zPosition = index;
