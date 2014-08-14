@@ -1,6 +1,8 @@
 SSStackedPageView
 =================
 
+``` THIS PROJECT IS CURRENTLY NOT UPDATED, PLEASE SUBMIT PULL REQUESTS FOR ANY BUGS ```
+
 Inspired by Passbook App and Reminders App for iOS 7, this is designed to have a stacked page view that uses reusable pages for efficiency. Easily scroll through UIImageViews, UIViews or your custom View with this one do-it-all class.
 
 
