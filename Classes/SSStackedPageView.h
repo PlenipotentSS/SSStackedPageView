@@ -31,6 +31,7 @@
 - (NSInteger)numberOfPagesForStackView:(SSStackedPageView *)stackView;
 
 ///handler for when a page is selected
-- (void)stackView:(SSStackedPageView *)stackView selectedPageAtIndex:(NSInteger) index;
+// selected - if false it means the card was deselected
+- (void)stackView:(SSStackedPageView *)stackView selectedPageAtIndex:(NSInteger)index selected:(BOOL)selected;
 
 @end
