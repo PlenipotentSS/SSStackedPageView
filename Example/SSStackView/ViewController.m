@@ -46,6 +46,7 @@
         thisView.backgroundColor = [UIColor getRandomColor];
         thisView.layer.cornerRadius = 5;
         thisView.layer.masksToBounds = YES;
+        thisView.layer.masksToBounds = YES;
     }
     return thisView;
 }
