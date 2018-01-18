@@ -124,6 +124,15 @@
     }
 }
 
+-(void)setSelectedPageIndex:(NSInteger)selectedPageIndex
+{
+    [self.delegate stackView:self
+         selectedPageAtIndex:selectedPageIndex >= 0 ? selectedPageIndex : self.selectedPageIndex
+                    selected:selectedPageIndex >= 0];
+    
+    _selectedPageIndex = selectedPageIndex;
+}
+
 - (void)resetPages
 {
     NSInteger start = self.visiblePages.location;
@@ -315,7 +324,7 @@
         pageTouchFrame.size.height = PAGE_PEAK;
     }
     [self selectPageAtIndex:index];
-    [self.delegate stackView:self selectedPageAtIndex:index];
+    
 }
 
 - (void)panned:(UIPanGestureRecognizer*)recognizer
@@ -336,7 +345,6 @@
         if (self.trackedTranslation < -PAGE_PEAK) {
             NSInteger pageIndex = [self.pages indexOfObject:page];
             [self selectPageAtIndex:pageIndex];
-            [self.delegate stackView:self selectedPageAtIndex:pageIndex];
         } else {
             self.selectedPageIndex = -1;
             [self resetPages];

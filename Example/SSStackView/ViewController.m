@@ -55,9 +55,9 @@
     return [self.views count];
 }
 
-- (void)stackView:(SSStackedPageView *)stackView selectedPageAtIndex:(NSInteger) index
+- (void)stackView:(SSStackedPageView *)stackView selectedPageAtIndex:(NSInteger) index selected:(BOOL)selected
 {
-    NSLog(@"selected page: %i",(int)index);
+    NSLog(@"%@ page: %i",selected ? @"selected" : @"deselected", (int)index);
 }
 
 
